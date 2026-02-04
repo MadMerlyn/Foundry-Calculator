@@ -16991,7 +16991,7 @@
     },
     "tiers": [
         {
-            "displayName": "Basic Smelting",
+            "displayName": "Tier 1",
             "icon_col": 12,
             "icon_row": 12,
             "name": "T1",
@@ -17003,7 +17003,7 @@
             }
         },
         {
-            "displayName": "Basic Steel",
+            "displayName": "Tier 2",
             "icon_col": 14,
             "icon_row": 16,
             "name": "T2",
@@ -17017,7 +17017,7 @@
             }
         },
         {
-            "displayName": "Blast Furnace",
+            "displayName": "Tier 3",
             "icon_col": 13,
             "icon_row": 10,
             "name": "T3",
