@@ -16991,9 +16991,9 @@
     },
     "tiers": [
         {
-            "displayName": "Tier 1",
-            "icon_col": 0,
-            "icon_row": 11,
+            "displayName": "Basic Smelting",
+            "icon_col": 12,
+            "icon_row": 12,
             "name": "T1",
             "prefix": "T1;",
             "recipes": {
@@ -17003,23 +17003,23 @@
             }
         },
         {
-            "displayName": "Tier 2",
-            "icon_col": 2,
-            "icon_row": 9,
+            "displayName": "Basic Steel",
+            "icon_col": 14,
+            "icon_row": 16,
             "name": "T2",
             "prefix": "T2;",
             "recipes": {
                 "_base_ore_technum": true,
                 "_base_ore_xenoferrite": true,
-                "_base_steel_t2": true,
+                "_base_steel_t1": true,
                 "_base_technum_rods_t2": true,
                 "_base_xf_plates_t2": true
             }
         },
         {
-            "displayName": "Tier 3",
-            "icon_col": 1,
-            "icon_row": 14,
+            "displayName": "Blast Furnace",
+            "icon_col": 13,
+            "icon_row": 10,
             "name": "T3",
             "prefix": "T3;",
             "recipes": {
