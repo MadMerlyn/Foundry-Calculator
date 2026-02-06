@@ -627,20 +627,53 @@ class FactoryCountCells {
         if (count.isZero()) {
             return {count}
         }
-        let factory = spec.getFactory(recipe)
-        var image = getImage(factory.factory)
-        image.classList.add("display")
+
+        // Clear previous content
         while (this.factoryCell.hasChildNodes()) {
             this.factoryCell.removeChild(this.factoryCell.lastChild)
         }
+
+        // Add recipe icon if needed
         if (recipe.displayGroup !== null || recipe.name !== recipe.products[0].item.name) {
             this.factoryCell.appendChild(getImage(recipe))
             this.factoryCell.appendChild(new Text(" : "))
         }
-        this.factoryCell.appendChild(image)
+
+        // Try mixed tier calculation
+        let mixedTier = calculateMixedTier(spec, recipe, count)
+
+        if (mixedTier && !mixedTier.primary.count.isZero()) {
+            this.renderMixedTierDisplay(mixedTier)
+            let factory = spec.getFactory(recipe)
+            return {factory, count}
+        } else {
+            // Normal single-tier display
+            let factory = spec.getFactory(recipe)
+            var image = getImage(factory.factory)
+            image.classList.add("display")
+            this.factoryCell.appendChild(image)
+            this.factoryCell.appendChild(new Text(" \u00d7"))
+            this.countNode.textContent = alignCount(count)
+            return {factory, count}
+        }
+    }
+    renderMixedTierDisplay(mixedTier) {
+        // Primary factory (higher tier)
+        let primaryImage = getImage(mixedTier.primary.factory)
+        primaryImage.classList.add("display")
+        this.factoryCell.appendChild(primaryImage)
         this.factoryCell.appendChild(new Text(" \u00d7"))
-        this.countNode.textContent = alignCount(count)
-        return {factory, count}
+
+        // Primary count in countNode
+        this.countNode.textContent = alignCount(mixedTier.primary.count)
+
+        // Add separator and secondary tier
+        this.countNode.appendChild(new Text(" + "))
+        let secondaryImage = getImage(mixedTier.secondary.factory)
+        secondaryImage.classList.add("display")
+        this.countNode.appendChild(secondaryImage)
+        this.countNode.appendChild(new Text(" \u00d7"))
+        this.countNode.appendChild(new Text(alignCount(mixedTier.secondary.count)))
     }
 }
 

@@ -682,8 +682,23 @@ function renderShowDebug(settings) {
     debug.checked = showDebug
 }
 
+// mixed tier factories
+var DEFAULT_MIXED_TIER = false
+
+var mixedTierEnabled = DEFAULT_MIXED_TIER
+
+function renderMixedTier(settings) {
+    mixedTierEnabled = DEFAULT_MIXED_TIER
+    if ("mt" in settings) {
+        mixedTierEnabled = settings.mt === "on"
+    }
+    var input = document.getElementById("mixed_tier")
+    input.checked = mixedTierEnabled
+}
+
 // all
 function renderSettings(settings) {
+    renderMixedTier(settings)
     renderTooltip(settings)
     renderColorScheme(settings)
     renderRateOptions(settings)

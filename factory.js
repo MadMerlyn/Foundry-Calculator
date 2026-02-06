@@ -328,6 +328,85 @@ function compareFactories(a, b) {
     return 0
 }
 
+// Tier detection utilities for mixed tier display
+var tierPattern = /^(.+)_(i{1,4})$/
+
+function parseTier(factoryName) {
+    // Returns {baseName: string, tier: number} or null
+    var match = factoryName.match(tierPattern)
+    if (!match) return null
+    return {
+        baseName: match[1],
+        tier: match[2].length // i=1, ii=2, iii=3, iv=4
+    }
+}
+
+function buildFactoryName(baseName, tier) {
+    var roman = ""
+    for (var i = 0; i < tier; i++) {
+        roman += "i"
+    }
+    return baseName + "_" + roman
+}
+
+function findLowerTierFactory(spec, currentFactory, recipe) {
+    var tierInfo = parseTier(currentFactory.name)
+    if (!tierInfo || tierInfo.tier <= 1) return null
+
+    var lowerTier = tierInfo.tier - 1
+    var lowerName = buildFactoryName(tierInfo.baseName, lowerTier)
+
+    var factories = spec.factories[recipe.category]
+    if (!factories) return null
+
+    for (var i = 0; i < factories.length; i++) {
+        if (factories[i].name === lowerName) {
+            return factories[i]
+        }
+    }
+    return null
+}
+
+function shouldUseMixedTier(spec, recipe) {
+    if (!mixedTierEnabled) return false
+    if (spec.useSmelter(recipe) || spec.useCrusher(recipe)) return false
+    return true
+}
+
+function calculateMixedTier(spec, recipe, totalCount) {
+    if (!shouldUseMixedTier(spec, recipe)) return null
+
+    var currentFactory = spec.getFactory(recipe)
+    if (!currentFactory) return null
+
+    var lowerFactory = findLowerTierFactory(spec, currentFactory.factory, recipe)
+    if (!lowerFactory) return null
+
+    // Extract integer and fractional parts
+    var divmod = totalCount.divmod(one)
+    var integerPart = divmod.quotient
+    var fractionalPart = divmod.remainder
+
+    // Threshold: fractional >= 0.68 means round up
+    var threshold = RationalFromFloats(68, 100)
+    if (!fractionalPart.less(threshold)) return null  // >= 0.68
+
+    // Calculate lower tier count
+    var speedRatio = lowerFactory.speed.div(currentFactory.factory.speed)
+    var lowerCount = fractionalPart.div(speedRatio).ceil()
+
+    return {
+        primary: {
+            factory: currentFactory.factory,
+            count: integerPart
+        },
+        secondary: {
+            factory: lowerFactory,
+            count: lowerCount
+        }
+    }
+}
+
 function FactorySpec(factories, tiers) {
     this.spec = {}
     this.factories = {}

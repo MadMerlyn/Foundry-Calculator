@@ -309,6 +309,12 @@ function changeTooltip(event) {
     display()
 }
 
+// Triggered when mixed tier factories toggle is changed.
+function changeMixedTier(event) {
+    mixedTierEnabled = event.target.checked
+    display()
+}
+
 // recipe row events
 
 function IgnoreHandler(row) {

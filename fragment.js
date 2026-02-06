@@ -97,6 +97,9 @@ function formatSettings(targets) {
     if (tooltipsEnabled != DEFAULT_TOOLTIP) {
         settings += "t=off&"
     }
+    if (mixedTierEnabled != DEFAULT_MIXED_TIER) {
+        settings += "mt=on&"
+    }
 
     settings += "items="
     var targetStrings = []
