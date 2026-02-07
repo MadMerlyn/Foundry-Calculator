@@ -486,14 +486,6 @@ FactorySpec.prototype = {
         }
         return recipe.category == "smelter" || recipe.category == "advanced_smelter"
     },
-    setMining: function(name) {
-        this.mining = name
-        // if (name == 'underground') {
-            // solver.removeDisabledRecipes({"_base_ore_xenoferrite": true, "_base_ore_technum": true, "Technum Ore": true})
-        // } else {
-            // solver.addDisabledRecipes({"_base_ore_xenoferrite": true, "_base_ore_technum": true, "Technum Ore": true})
-        // }
-    },
     setMetallurgy: function(name) {
         for (var i = 0; i < this.tiers.length; i++) {
             if (this.tiers[i].name == name) {

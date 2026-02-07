@@ -47,9 +47,6 @@ function formatSettings(targets) {
     if (spec.metallurgy.name != DEFAULT_METALLURGY) {
         settings += "metallurgy=" + spec.metallurgy.name + "&"
     }
-    if (spec.mining != DEFAULT_MINING) {
-        settings += "mining=" + spec.mining + "&"
-    }
     if (preferredFuel.name != DEFAULT_FUEL) {
         settings += "fuel=" + preferredFuel.name + "&"
     }
