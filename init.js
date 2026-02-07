@@ -47,6 +47,46 @@ var spriteSheetSize
 
 var initDone = false
 
+// Fallback GitHub repository URL (used when not deployed on GitHub Pages)
+var FALLBACK_GITHUB_REPO = "erkle64/Foundry-Calculator"
+
+// Updates the GitHub footer link to point to the correct repository
+function updateGitHubFooterLink() {
+    var githubUrl = "https://github.com/"
+    var hostname = window.location.hostname
+    var pathname = window.location.pathname
+
+    // Check if deployed on GitHub Pages
+    if (hostname.endsWith(".github.io")) {
+        // Extract username from hostname (e.g., "madmerlyn.github.io" -> "madmerlyn")
+        var username = hostname.replace(".github.io", "")
+
+        // Extract repo name from pathname (e.g., "/foundry-calculator/" -> "foundry-calculator")
+        var pathParts = pathname.split("/").filter(function(part) { return part.length > 0 })
+        var repoName = pathParts.length > 0 ? pathParts[0] : ""
+
+        // Construct GitHub URL
+        if (repoName) {
+            githubUrl += username + "/" + repoName
+        } else {
+            // User/org page (username.github.io with no repo in path)
+            githubUrl += username + "/" + username + ".github.io"
+        }
+    } else {
+        // Not GitHub Pages, use fallback
+        githubUrl += FALLBACK_GITHUB_REPO
+    }
+
+    // Update the footer link
+    var footer = document.getElementById("footer")
+    if (footer) {
+        var links = footer.getElementsByTagName("a")
+        if (links.length > 0) {
+            links[0].href = githubUrl
+        }
+    }
+}
+
 // Set the page back to a state immediately following initial setup, but before
 // the dataset is loaded for the first time.
 //
@@ -243,4 +283,5 @@ function init() {
     // We don't need to call clickVisualize here, as we will properly render
     // the graph when we call itemUpdate() at the end of initialization.
     clickTab(currentTab)
+    updateGitHubFooterLink()
 }
